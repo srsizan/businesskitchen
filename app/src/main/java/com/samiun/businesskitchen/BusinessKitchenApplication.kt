@@ -6,7 +6,7 @@ import timber.log.Timber
 
 @HiltAndroidApp
 
-class BussinessKitchenApplication : Application() {
+class BusinessKitchenApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         Timber.plant(Timber.DebugTree())
