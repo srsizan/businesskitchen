@@ -1,4 +1,4 @@
-package com.samiun.businesskitchen.data.remote
+package com.samiun.businesskitchen.ui.screens.loginscreen
 
 data class LoginResponse(
     val token: String,

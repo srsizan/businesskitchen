@@ -1,4 +1,4 @@
-package com.samiun.businesskitchen.data.remote
+package com.samiun.businesskitchen.ui.screens.loginscreen
 
 data class LoginModel(
     val password: String,

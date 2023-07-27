@@ -10,12 +10,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.navigation.NavController
+import com.samiun.businesskitchen.ui.screens.SharedViewModel
 import com.samiun.businesskitchen.ui.screens.loginscreen.LoginViewModel
+import com.samiun.businesskitchen.ui.screens.loginscreen.UserData
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainMenuScreen(
-    navController: NavController, viewModel: LoginViewModel, modifier: Modifier = Modifier
+    navController: NavController,
+    viewModel: SharedViewModel,
+    modifier: Modifier = Modifier,
+    userData: UserData?,
+    onSignOut: () -> Unit
 ) {
     var exitDialog by rememberSaveable {
         mutableStateOf(false)

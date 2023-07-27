@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "624773367129",
+    "project_id": "business-kitchen-2c4a9",
+    "storage_bucket": "business-kitchen-2c4a9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:624773367129:android:27c17a1df1ce1fa8c3f848",
+        "android_client_info": {
+          "package_name": "com.samiun.businesskitchen"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "624773367129-ltv0999sjdb6bl6ac5r6lkj909d3jn5e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDMj5B1fdl7TrP138H91zVFoNJIFFy3dRg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "624773367129-ltv0999sjdb6bl6ac5r6lkj909d3jn5e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

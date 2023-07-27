@@ -115,7 +115,7 @@ dependencies {
     implementation 'com.google.maps.android:maps-compose:2.11.4'
     implementation 'com.google.maps.android:maps-ktx:3.3.0'
 
-    //For aws
-    implementation 'com.amazonaws:aws-android-sdk-s3:2.17.0'
-    implementation 'com.amazonaws:aws-android-sdk-mobile-client:2.17.0'
+    // For Firebase
+    implementation 'com.google.firebase:firebase-auth-ktx:22.1.0'
+    implementation 'com.google.android.gms:play-services-auth:20.6.0'
 }
