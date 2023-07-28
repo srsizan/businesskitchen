@@ -1,4 +1,3 @@
-package com.samiun.businesskitchen.ui.screens.loginscreen
 
 import android.content.Context
 import android.content.Intent
@@ -10,6 +9,8 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.samiun.businesskitchen.R
+import com.samiun.businesskitchen.ui.screens.SignInResult
+import com.samiun.businesskitchen.ui.screens.UserData
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.tasks.await
 

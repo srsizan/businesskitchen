@@ -1,5 +1,4 @@
-package com.samiun.businesskitchen.ui.screens.loginscreen
-
+package com.samiun.businesskitchen.ui.screens
 
 data class SignInState(
     val isSignInSuccessful: Boolean = false,

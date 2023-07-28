@@ -11,8 +11,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.navigation.NavController
 import com.samiun.businesskitchen.ui.screens.SharedViewModel
-import com.samiun.businesskitchen.ui.screens.loginscreen.LoginViewModel
-import com.samiun.businesskitchen.ui.screens.loginscreen.UserData
+import com.samiun.businesskitchen.ui.screens.UserData
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

@@ -1,4 +1,4 @@
-package com.samiun.businesskitchen.ui.screens.loginscreen
+package com.samiun.businesskitchen.ui.screens
 
 data class SignInResult(
     val data: UserData?,
