@@ -21,23 +21,19 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.google.android.gms.auth.api.identity.Identity
+import com.google.firebase.FirebaseApp
 import com.samiun.businesskitchen.ui.screens.SignInScreen
 import com.samiun.businesskitchen.ui.screens.SignInViewModel
 import com.samiun.businesskitchen.ui.screens.mainmenuscreen.ProfileScreen
 import com.samiun.businesskitchen.ui.theme.BusinessKitchenTheme
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
-
-    private val googleAuthUiClient by lazy {
-        GoogleAuthUiClient(
-            context = applicationContext,
-            oneTapClient = Identity.getSignInClient(applicationContext)
-        )
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        FirebaseApp.initializeApp(this@MainActivity)
         setContent {
             BusinessKitchenTheme() {
                 // A surface container using the 'background' color from the theme
@@ -45,6 +41,12 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
+                     val googleAuthUiClient by lazy {
+                        GoogleAuthUiClient(
+                            context = applicationContext,
+                            oneTapClient = Identity.getSignInClient(applicationContext)
+                        )
+                    }
                     val navController = rememberNavController()
                     NavHost(navController = navController, startDestination = "sign_in") {
                         composable("sign_in") {
