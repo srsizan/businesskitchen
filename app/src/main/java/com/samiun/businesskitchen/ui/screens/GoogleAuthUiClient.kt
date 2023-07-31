@@ -5,7 +5,8 @@ import android.content.IntentSender
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.BeginSignInRequest.GoogleIdTokenRequestOptions
 import com.google.android.gms.auth.api.identity.SignInClient
-import com.google.firebase.FirebaseApp
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -41,6 +42,7 @@ class GoogleAuthUiClient(
         val googleCredentials = GoogleAuthProvider.getCredential(googleIdToken, null)
         return try {
             val user = auth.signInWithCredential(googleCredentials).await().user
+
             SignInResult(
                 data = user?.run {
                     UserData(
@@ -90,5 +92,23 @@ class GoogleAuthUiClient(
             )
             .setAutoSelectEnabled(true)
             .build()
+    }
+}
+
+suspend fun disableUserAccount(email: String): Boolean {
+    return try {
+        val auth = FirebaseAuth.getInstance()
+        val userRecord: UserRecord = FirebaseAuth.getInstance().getUserByEmail(email)
+
+
+        val updatedUser = UserRecord.UpdateRequest(userRecord.uid)
+            .setDisabled(true)
+            .build()
+
+        auth.updateUser(updatedUser)
+        true
+    } catch (e: FirebaseAuthException) {
+        e.printStackTrace()
+        false
     }
 }

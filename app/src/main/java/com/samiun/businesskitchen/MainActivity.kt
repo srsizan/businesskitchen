@@ -111,7 +111,6 @@ class MainActivity : ComponentActivity() {
                                             "Signed out",
                                             Toast.LENGTH_LONG
                                         ).show()
-
                                         navController.popBackStack()
                                     }
                                 }
