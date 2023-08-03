@@ -1,3 +1,4 @@
+package com.samiun.businesskitchen.presentation.sign_in
 
 import android.content.Context
 import android.content.Intent
@@ -5,14 +6,10 @@ import android.content.IntentSender
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.BeginSignInRequest.GoogleIdTokenRequestOptions
 import com.google.android.gms.auth.api.identity.SignInClient
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.samiun.businesskitchen.R
-import com.samiun.businesskitchen.ui.screens.SignInResult
-import com.samiun.businesskitchen.ui.screens.UserData
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.tasks.await
 
@@ -21,7 +18,6 @@ class GoogleAuthUiClient(
     private val oneTapClient: SignInClient
 ) {
     private val auth = Firebase.auth
-
 
     suspend fun signIn(): IntentSender? {
         val result = try {
@@ -42,7 +38,6 @@ class GoogleAuthUiClient(
         val googleCredentials = GoogleAuthProvider.getCredential(googleIdToken, null)
         return try {
             val user = auth.signInWithCredential(googleCredentials).await().user
-
             SignInResult(
                 data = user?.run {
                     UserData(
@@ -90,25 +85,6 @@ class GoogleAuthUiClient(
                     .setServerClientId(context.getString(R.string.web_client_id))
                     .build()
             )
-            .setAutoSelectEnabled(true)
             .build()
-    }
-}
-
-suspend fun disableUserAccount(email: String): Boolean {
-    return try {
-        val auth = FirebaseAuth.getInstance()
-        val userRecord: UserRecord = FirebaseAuth.getInstance().getUserByEmail(email)
-
-
-        val updatedUser = UserRecord.UpdateRequest(userRecord.uid)
-            .setDisabled(true)
-            .build()
-
-        auth.updateUser(updatedUser)
-        true
-    } catch (e: FirebaseAuthException) {
-        e.printStackTrace()
-        false
     }
 }

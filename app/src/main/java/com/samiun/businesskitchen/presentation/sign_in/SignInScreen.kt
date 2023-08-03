@@ -1,4 +1,4 @@
-package com.samiun.businesskitchen.ui.screens
+package com.samiun.businesskitchen.presentation.sign_in
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.Box

@@ -10,14 +10,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.navigation.NavController
-import com.samiun.businesskitchen.ui.screens.SharedViewModel
-import com.samiun.businesskitchen.ui.screens.UserData
+import com.samiun.businesskitchen.presentation.sign_in.UserData
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainMenuScreen(
     navController: NavController,
-    viewModel: SharedViewModel,
     modifier: Modifier = Modifier,
     userData: UserData?,
     onSignOut: () -> Unit

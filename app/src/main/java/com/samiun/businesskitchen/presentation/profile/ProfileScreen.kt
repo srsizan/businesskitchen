@@ -1,4 +1,4 @@
-package com.samiun.businesskitchen.ui.screens.mainmenuscreen
+package com.samiun.businesskitchen.presentation.profile
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -14,7 +14,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.samiun.businesskitchen.ui.screens.UserData
+import com.samiun.businesskitchen.presentation.sign_in.UserData
 
 @Composable
 fun ProfileScreen(

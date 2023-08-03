@@ -1,6 +1,5 @@
 package com.samiun.businesskitchen
 
-import GoogleAuthUiClient
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -22,13 +21,13 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.google.android.gms.auth.api.identity.Identity
 import com.google.firebase.FirebaseApp
-import com.samiun.businesskitchen.ui.screens.SignInScreen
-import com.samiun.businesskitchen.ui.screens.SignInViewModel
-import com.samiun.businesskitchen.ui.screens.mainmenuscreen.ProfileScreen
+import com.samiun.businesskitchen.presentation.profile.ProfileScreen
+import com.samiun.businesskitchen.presentation.sign_in.GoogleAuthUiClient
+import com.samiun.businesskitchen.presentation.sign_in.SignInScreen
+import com.samiun.businesskitchen.presentation.sign_in.SignInViewModel
 import com.samiun.businesskitchen.ui.theme.BusinessKitchenTheme
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -91,6 +90,8 @@ class MainActivity : ComponentActivity() {
                                 onSignInClick = {
                                     lifecycleScope.launch {
                                         val signInIntentSender = googleAuthUiClient.signIn()
+                                        Timber.e("$signInIntentSender")
+
                                         launcher.launch(
                                             IntentSenderRequest.Builder(
                                                 signInIntentSender ?: return@launch
