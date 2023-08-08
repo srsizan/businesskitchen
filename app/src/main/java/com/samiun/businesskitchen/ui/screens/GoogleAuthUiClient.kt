@@ -2,31 +2,32 @@
 import android.content.Context
 import android.content.Intent
 import android.content.IntentSender
+import android.util.Log
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.BeginSignInRequest.GoogleIdTokenRequestOptions
 import com.google.android.gms.auth.api.identity.SignInClient
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.database.ktx.database
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.samiun.businesskitchen.R
 import com.samiun.businesskitchen.ui.screens.SignInResult
 import com.samiun.businesskitchen.ui.screens.UserData
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import timber.log.Timber
 
 class GoogleAuthUiClient(
     private val context: Context,
     private val oneTapClient: SignInClient
 ) {
     private val auth = Firebase.auth
-    val dataBase = Firebase.database.reference
-    fun writeNewUser(user: FirebaseUser?) {
-        if (user != null) {
-            dataBase.child("users").child(user.uid).setValue(user)
-        }
-    }
+    val dataBase = Firebase.firestore.collection("users")
+
     suspend fun signIn(): IntentSender? {
         val result = try {
             oneTapClient.beginSignIn(
@@ -46,11 +47,11 @@ class GoogleAuthUiClient(
         val googleCredentials = GoogleAuthProvider.getCredential(googleIdToken, null)
         return try {
             val user = auth.signInWithCredential(googleCredentials).await().user
-            writeNewUser(user)
             SignInResult(
                 data = user?.run {
                     UserData(
                         userId = uid,
+                        userEmail = email,
                         username = displayName,
                         profilePictureUrl = photoUrl?.toString()
                     )
@@ -81,6 +82,7 @@ class GoogleAuthUiClient(
     fun getSignedInUser(): UserData? = auth.currentUser?.run {
         UserData(
             userId = uid,
+            userEmail = email,
             username = displayName,
             profilePictureUrl = photoUrl?.toString()
         )
