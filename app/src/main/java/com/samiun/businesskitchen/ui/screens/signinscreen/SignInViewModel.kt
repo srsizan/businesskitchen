@@ -1,4 +1,4 @@
-package com.samiun.businesskitchen.ui.screens
+package com.samiun.businesskitchen.ui.screens.signinscreen
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

@@ -2,24 +2,18 @@
 import android.content.Context
 import android.content.Intent
 import android.content.IntentSender
-import android.util.Log
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.BeginSignInRequest.GoogleIdTokenRequestOptions
 import com.google.android.gms.auth.api.identity.SignInClient
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.samiun.businesskitchen.R
-import com.samiun.businesskitchen.ui.screens.SignInResult
-import com.samiun.businesskitchen.ui.screens.UserData
+import com.samiun.businesskitchen.ui.screens.signinscreen.SignInResult
+import com.samiun.businesskitchen.ui.screens.signinscreen.UserData
 import kotlinx.coroutines.CancellationException
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
-import timber.log.Timber
 
 class GoogleAuthUiClient(
     private val context: Context,
