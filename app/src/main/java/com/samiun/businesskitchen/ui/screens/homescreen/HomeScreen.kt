@@ -2,6 +2,8 @@ package com.samiun.businesskitchen.ui.screens.homescreen
 
 import android.app.Activity
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
@@ -11,19 +13,23 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -33,6 +39,8 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.samiun.businesskitchen.R
 import com.samiun.businesskitchen.ui.components.HomeScreenTopBar
+import com.samiun.businesskitchen.ui.screens.Screen
+import com.samiun.businesskitchen.ui.screens.SharedViewModel
 import com.samiun.businesskitchen.ui.screens.homescreen.HomeScreenContants.CAN_ACCESS
 import com.samiun.businesskitchen.ui.screens.homescreen.HomeScreenContants.USER_ID
 import com.samiun.businesskitchen.ui.screens.signinscreen.UserData
@@ -45,19 +53,34 @@ fun HomeScreen(
     navController: NavController,
     userData: UserData?,
     modifier: Modifier = Modifier,
-    onSignOut: () -> Unit
+    onSignOut: () -> Unit,
+    sharedViewModel: SharedViewModel
 ) {
     val context = LocalContext.current
     val dataBase = Firebase.firestore.collection(stringResource(R.string.users))
     var dialogBox by rememberSaveable {
         mutableStateOf(false)
     }
+    var controlPanelBox by rememberSaveable {
+        mutableStateOf(false)
+    }
+
+
     val listofItems = listOf(
         Pair("Cake", R.drawable.cake),
         Pair("Consumer Goods", R.drawable.consumergoods),
         Pair("Misc", R.drawable.misc),
         Pair("Fast Food", R.drawable.fastfood)
     )
+
+    var selectedItems by remember {
+        mutableStateOf(sharedViewModel.getControlPanelList())
+    }
+
+    if(selectedItems == null){
+        sharedViewModel.addItemsFromControlPanel(listofItems)
+    }
+
     if (dialogBox) {
         AlertDialog(
             onDismissRequest = { },
@@ -78,10 +101,65 @@ fun HomeScreen(
             },
         )
     }
+    if (controlPanelBox) {
+        AlertDialog(
+            onDismissRequest = { controlPanelBox = false },
+            title = { Text(text = "Control Panel") },
+            text = {
+                Column() {
+                    for (string in listofItems) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Checkbox(
+                                checked = selectedItems!!.contains(string),
+                                modifier = Modifier.padding(0.dp),
+                                onCheckedChange = { checked ->
+                                    selectedItems = if (checked) {
+                                        selectedItems!! + string
+                                    } else {
+                                        selectedItems!! - string
+                                    }
+                                }
+                            )
+                            Text(
+                                text = string.first
+                            )
+                        }
+                    }
+                }
+            },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        controlPanelBox = false
+                        selectedItems?.let { sharedViewModel.addItemsFromControlPanel(it) }
+
+                    }
+                ) {
+                    Text(text = "Confirm")
+                }
+            },
+            dismissButton = {
+                Button(
+                    onClick = {
+                        controlPanelBox = false
+                    }
+                ) {
+                    Text(text = "Dismiss")
+                }
+            }
+        )
+    }
 
     Scaffold(topBar = {
         HomeScreenTopBar(
-            onSignOut = onSignOut
+            onSignOut = onSignOut,
+            onControlPanelClick = {
+                controlPanelBox = true
+            }
         )
     }) {
         Box(modifier = modifier.padding(it)) {
@@ -120,7 +198,7 @@ fun HomeScreen(
                 LazyVerticalGrid(
                     columns = GridCells.Fixed(2)
                 ) {
-                    items(listofItems) { foodItems ->
+                    items(selectedItems!!) { foodItems ->
                         Card(
                             modifier = modifier
                                 .fillMaxWidth()
@@ -129,6 +207,8 @@ fun HomeScreen(
                                 .combinedClickable(
                                     onClick = {
                                         navController.navigate(foodItems.first)
+                                        Timber.d(foodItems.first)
+                                        Timber.d(foodItems.second.toString())
                                     },
                                     onLongClick = {
                                     }
@@ -137,11 +217,15 @@ fun HomeScreen(
                             Box(
                                 contentAlignment = Alignment.Center
                             ) {
-                                AsyncImage(
-                                    model = foodItems.second,
-                                    contentDescription = stringResource(R.string.imagedescription),
-                                    contentScale = ContentScale.Crop
-                                )
+                                Column {
+                                    AsyncImage(
+                                        modifier= modifier.height(150.dp),
+                                        model = foodItems.second,
+                                        contentDescription = stringResource(R.string.imagedescription),
+                                        contentScale = ContentScale.Crop
+                                    )
+                                    Text(text = foodItems.first)
+                                }
                             }
                         }
                     }

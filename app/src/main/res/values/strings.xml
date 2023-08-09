@@ -10,5 +10,5 @@
     <string name="reverse_dropdown_button">reverse dropdown button</string>
     <string name="control_pannel">Control Pannel</string>
     <string name="enter_proper_items_details">Enter Proper Item Details\n</string>
-    <string name="saveCake">Save Cake</string>
+    <string name="saveItem">Save Item</string>
 </resources>

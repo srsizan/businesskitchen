@@ -1,6 +1,8 @@
 package com.samiun.businesskitchen.ui.screens.cakescreen
 
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -13,6 +15,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -23,6 +26,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.samiun.businesskitchen.R
@@ -36,21 +40,35 @@ fun AddCakeScreen(
     navController: NavController,
     sharedViewModel: SharedViewModel,
     modifier: Modifier = Modifier
-) {
+){
     var name by remember {
         mutableStateOf("")
     }
     var quantity by remember {
-        mutableStateOf(0)
+        mutableStateOf("")
     }
     var maxUsage by remember {
-        mutableStateOf(0)
+        mutableStateOf("")
     }
     var maxStock by remember {
-        mutableStateOf(0)
+        mutableStateOf("")
     }
     val context = LocalContext.current
     val focusManager = LocalFocusManager.current
+    val backCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            navController.navigate(Screen.CakeScreen.route)
+        }
+    }
+    val localOnBackPressedDispatcherOwner = LocalOnBackPressedDispatcherOwner.current
+
+    DisposableEffect(Unit) {
+        val dispatcher = localOnBackPressedDispatcherOwner?.onBackPressedDispatcher
+        dispatcher?.addCallback(backCallback)
+        onDispose {
+            backCallback.remove()
+        }
+    }
     Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         Column {
             Spacer(modifier = Modifier.height(20.dp))
@@ -67,22 +85,24 @@ fun AddCakeScreen(
             Spacer(modifier = Modifier.height(20.dp))
             OutlinedTextField(
                 modifier = Modifier.width(300.dp),
-                value = quantity.toString(),
-                onValueChange = { quantity = it.toIntOrNull() ?: 0 },
+                value = quantity,
+                onValueChange = { quantity = it },
                 maxLines = 1,
                 placeholder = { Text(text = "") },
                 keyboardOptions = KeyboardOptions.Default.copy(
+                    keyboardType = KeyboardType.Number,
                     imeAction = ImeAction.Next
                 )
             )
             Spacer(modifier = Modifier.height(20.dp))
             OutlinedTextField(
                 modifier = Modifier.width(300.dp),
-                value = maxUsage.toString(),
-                onValueChange = { maxUsage = it.toIntOrNull() ?: 0 },
+                value = maxUsage,
+                onValueChange = { maxUsage = it},
                 maxLines = 1,
                 placeholder = { Text(text = "") },
                 keyboardOptions = KeyboardOptions.Default.copy(
+                    keyboardType = KeyboardType.Number,
                     imeAction = ImeAction.Next
                 )
             )
@@ -90,27 +110,28 @@ fun AddCakeScreen(
             OutlinedTextField(
                 modifier = Modifier.width(300.dp),
                 value = maxStock.toString(),
-                onValueChange = { maxStock = it.toIntOrNull() ?: 0 },
+                onValueChange = { maxStock = it },
                 maxLines = 1,
                 placeholder = { Text(text = "") },
                 keyboardOptions = KeyboardOptions.Default.copy(
-                    imeAction = ImeAction.Next
+                    keyboardType = KeyboardType.Number,
+                    imeAction = ImeAction.Done
                 )
             )
             Spacer(modifier = Modifier.height(20.dp))
 
             Button(onClick = {
-                if (name.isNotEmpty() && quantity != 0 && maxUsage != 0 && maxStock != 0) {
+                if (name.isNotEmpty() && quantity.toIntOrNull() != null && maxUsage.toIntOrNull() != null && maxStock.toIntOrNull() != null) {
                     sharedViewModel.addCake(
                         Items(
                             name = name,
-                            quantity = quantity,
+                            quantity = quantity.toInt(),
                             category = "Cake",
-                            maxUsage = maxUsage,
-                            maxStock = maxStock
-                        ), context = context
+                            maxUsage = maxUsage.toInt(),
+                            maxStock = maxStock.toInt()
+                        )
                     )
-                    navController.navigate(Screen.CakeScreen.route)
+                    navController.navigate(Screen.MiscScreen.route)
                 } else {
                     Toast.makeText(
                         context,
@@ -119,7 +140,7 @@ fun AddCakeScreen(
                     ).show()
                 }
             }) {
-                Text(text = stringResource(R.string.saveCake))
+                Text(text = stringResource(R.string.saveItem))
 
             }
         }

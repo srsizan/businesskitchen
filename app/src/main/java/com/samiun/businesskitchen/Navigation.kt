@@ -14,7 +14,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -52,7 +51,7 @@ fun Navigation() {
             val state by viewModel.state.collectAsStateWithLifecycle()
             LaunchedEffect(key1 = Unit) {
                 if(googleAuthUiClient.getSignedInUser() != null) {
-                    navController.navigate(Screen.ProfileScreen.route)
+                    navController.navigate(Screen.HomeScreen.route)
                 }
             }
 
@@ -78,7 +77,7 @@ fun Navigation() {
                         Toast.LENGTH_LONG
                     ).show()
 
-                    navController.navigate(Screen.ProfileScreen.route)
+                    navController.navigate(Screen.HomeScreen.route)
                     viewModel.resetState()
                 }
             }
@@ -97,7 +96,7 @@ fun Navigation() {
                 }
             )
         }
-        composable(Screen.ProfileScreen.route) {
+        composable(Screen.HomeScreen.route) {
             HomeScreen(
                 navController= navController,
                 userData = googleAuthUiClient.getSignedInUser(),
@@ -112,6 +111,7 @@ fun Navigation() {
                         navController.popBackStack()
                     }
                 },
+                sharedViewModel = sharedViewModel
             )
         }
 

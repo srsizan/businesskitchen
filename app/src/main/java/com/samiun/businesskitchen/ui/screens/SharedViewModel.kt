@@ -1,7 +1,5 @@
 package com.samiun.businesskitchen.ui.screens
 
-import android.content.ClipData.Item
-import android.content.Context
 import androidx.lifecycle.ViewModel
 import com.samiun.businesskitchen.data.model.ItemRecords
 import com.samiun.businesskitchen.data.model.Items
@@ -16,8 +14,15 @@ class SharedViewModel @Inject constructor(
 
     var currentData = settingsRepository.getListFromSharedPref()
     var cakeList = mutableListOf<Items>()
+    var consumerGoodList = mutableListOf<Items>()
+    var miscList = mutableListOf<Items>()
+    var fastFoodList = mutableListOf<Items>()
 
-    fun addCake(items: Items, context: Context) {
+    var currentList = settingsRepository.getControlPanelFromSharedPref()
+    var selectedItems = mutableListOf<Pair<String,Int>>()
+
+
+    fun addCake(items: Items) {
         if(currentData ==null){
             currentData = ItemRecords()
         }
@@ -26,7 +31,41 @@ class SharedViewModel @Inject constructor(
         currentData!!.data.cakeItems = cakeList
         settingsRepository.setListToSharedPref(currentData!!)
     }
-    fun getCake(): ItemRecords? {
+    fun addConsumerGood(items: Items) {
+        if(currentData ==null){
+            currentData = ItemRecords()
+        }
+        consumerGoodList = currentData!!.data.consumerGoodItems.toMutableList()
+        consumerGoodList.add(items)
+        currentData!!.data.consumerGoodItems = consumerGoodList
+        settingsRepository.setListToSharedPref(currentData!!)
+    }
+    fun addMisc(items: Items) {
+        if(currentData ==null){
+            currentData = ItemRecords()
+        }
+        miscList = currentData!!.data.miscItems.toMutableList()
+        miscList.add(items)
+        currentData!!.data.miscItems = miscList
+        settingsRepository.setListToSharedPref(currentData!!)
+    }
+    fun addFastFood(items: Items) {
+        if(currentData ==null){
+            currentData = ItemRecords()
+        }
+        fastFoodList = currentData!!.data.fastFoodItems.toMutableList()
+        fastFoodList.add(items)
+        currentData!!.data.fastFoodItems = fastFoodList
+        settingsRepository.setListToSharedPref(currentData!!)
+    }
+
+    fun addItemsFromControlPanel(listOfPair: List<Pair<String,Int>>) {
+        settingsRepository.setControlPanelSharedPref(listOfPair)
+    }
+    fun getControlPanelList(): List<Pair<String, Int>>? {
+       return settingsRepository.getControlPanelFromSharedPref()
+    }
+    fun getItems(): ItemRecords? {
         return settingsRepository.getListFromSharedPref()
     }
 }
