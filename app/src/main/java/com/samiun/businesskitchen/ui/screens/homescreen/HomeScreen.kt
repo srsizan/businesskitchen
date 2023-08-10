@@ -67,13 +67,13 @@ fun HomeScreen(
         mutableStateOf(false)
     }
 
-
     val listofItems = listOf(
-        Pair("Cake", R.drawable.cake),
-        Pair("Consumer Goods", R.drawable.consumergoods),
-        Pair("Misc", R.drawable.misc),
-        Pair("Fast Food", R.drawable.fastfood)
+        Pair("Cake", context.resources.getResourceEntryName(R.drawable.cake)),
+        Pair("Consumer Goods", context.resources.getResourceEntryName(R.drawable.consumergoods)),
+        Pair("Misc", context.resources.getResourceEntryName(R.drawable.misc)),
+        Pair("Fast Food",context.resources.getResourceEntryName(R.drawable.fastfood))
     )
+    Timber.d(" Items : - $listofItems")
 
     var selectedItems by remember {
         mutableStateOf(sharedViewModel.getControlPanelList())
@@ -197,9 +197,11 @@ fun HomeScreen(
                         Timber.e("$e")
                     }
                 }
+                if(selectedItems!=null){
                 LazyVerticalGrid(
                     columns = GridCells.Fixed(2)
                 ) {
+                    Timber.e("$selectedItems")
                     items(selectedItems!!) { foodItems ->
                         Card(
                             modifier = modifier
@@ -222,7 +224,7 @@ fun HomeScreen(
                                 Column {
                                     AsyncImage(
                                         modifier= modifier.height(150.dp),
-                                        model = foodItems.second,
+                                        model = context.resources.getIdentifier(foodItems.second, "drawable", "com.samiun.businesskitchen"),
                                         contentDescription = stringResource(R.string.imagedescription),
                                         contentScale = ContentScale.Crop
                                     )
@@ -231,6 +233,7 @@ fun HomeScreen(
                             }
                         }
                     }
+                }
                 }
             }
         }

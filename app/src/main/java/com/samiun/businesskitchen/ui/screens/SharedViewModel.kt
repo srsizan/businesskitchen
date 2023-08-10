@@ -59,10 +59,10 @@ class SharedViewModel @Inject constructor(
         settingsRepository.setListToSharedPref(currentData!!)
     }
 
-    fun addItemsFromControlPanel(listOfPair: List<Pair<String,Int>>) {
+    fun addItemsFromControlPanel(listOfPair: List<Pair<String, String>>) {
         settingsRepository.setControlPanelSharedPref(listOfPair)
     }
-    fun getControlPanelList(): List<Pair<String, Int>>? {
+    fun getControlPanelList(): List<Pair<String, String>>? {
        return settingsRepository.getControlPanelFromSharedPref()
     }
     fun getItems(): ItemRecords? {

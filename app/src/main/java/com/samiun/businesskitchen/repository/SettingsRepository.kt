@@ -21,11 +21,11 @@ class SettingsRepository @Inject constructor(private val prefs: SharedPreference
         return Gson().fromJson(prefs.getString(ITEM_TOKEN, ""), listOfMyClassObject)
     }
 
-    fun setControlPanelSharedPref(listofPair: List<Pair<String,Int>>) {
+    fun setControlPanelSharedPref(listofPair: List<Pair<String, String>>) {
         prefs.edit().putString(CONTROL_PANEL, Gson().toJson(listofPair)).apply()
     }
-    fun getControlPanelFromSharedPref(): List<Pair<String,Int>>? {
-        val listOfMyClassObject: Type = object : TypeToken<List<Pair<String,Int>>?>() {}.type
+    fun getControlPanelFromSharedPref(): List<Pair<String,String>>? {
+        val listOfMyClassObject: Type = object : TypeToken<List<Pair<String,String>>?>() {}.type
         return Gson().fromJson(prefs.getString(CONTROL_PANEL, ""), listOfMyClassObject)
     }
 }
