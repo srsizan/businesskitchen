@@ -45,6 +45,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.samiun.businesskitchen.R
 import com.samiun.businesskitchen.ui.components.HomeScreenTopBar
+import com.samiun.businesskitchen.ui.components.ItemWithImage
 import com.samiun.businesskitchen.ui.screens.SharedViewModel
 import com.samiun.businesskitchen.ui.screens.homescreen.HomeScreenContants.CAN_ACCESS
 import com.samiun.businesskitchen.ui.screens.homescreen.HomeScreenContants.USER_ID
@@ -226,39 +227,21 @@ fun HomeScreen(
                     ) {
                         Timber.e("$selectedItems")
                         items(selectedItems!!) { foodItems ->
-                            Card(
-                                modifier = modifier
-                                    .fillMaxWidth()
-                                    .height(200.dp)
-                                    .padding(10.dp)
-                                    .combinedClickable(
-                                        onClick = {
-                                            navController.navigate(foodItems.first)
-                                            Timber.d(foodItems.first)
-                                            Timber.d(foodItems.second.toString())
-                                        },
-                                        onLongClick = {
-                                        }
-                                    )
-                            ) {
                                 Box(
                                     contentAlignment = Alignment.Center
                                 ) {
                                     Column {
-                                        AsyncImage(
-                                            modifier = modifier.height(150.dp),
-                                            model = context.resources.getIdentifier(
-                                                foodItems.second,
-                                                "drawable",
-                                                "com.samiun.businesskitchen"
-                                            ),
-                                            contentDescription = stringResource(R.string.imagedescription),
-                                            contentScale = ContentScale.Crop
-                                        )
-                                        Text(text = foodItems.first)
+                                        ItemWithImage(
+                                            context = context,
+                                            name = foodItems.first,
+                                            image = foodItems.second,
+                                            modifier = modifier
+                                        ) {
+                                            navController.navigate(foodItems.first)
+                                        }
                                     }
                                 }
-                            }
+
                         }
                     }
                 }
