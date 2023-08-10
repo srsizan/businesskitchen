@@ -48,7 +48,11 @@ fun ConsumerGoodScreen(navController: NavController, sharedViewModel: SharedView
             )
         },
         floatingActionButton = {
-            ItemsFloatingActionButton(navController = navController, sharedViewModel, Screen.AddConsumerGoodsScreen.route)
+            ItemsFloatingActionButton(
+                navController = navController,
+                sharedViewModel,
+                Screen.AddConsumerGoodsScreen.route
+            )
         }
     ) {
         Box(modifier = Modifier.padding(it)) {

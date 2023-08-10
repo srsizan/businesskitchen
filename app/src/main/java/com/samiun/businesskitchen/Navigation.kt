@@ -17,21 +17,21 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.samiun.businesskitchen.ui.screens.SharedViewModel
-import com.samiun.businesskitchen.ui.screens.signinscreen.SignInViewModel
-import kotlinx.coroutines.launch
 import com.google.android.gms.auth.api.identity.Identity
 import com.samiun.businesskitchen.ui.screens.Screen
+import com.samiun.businesskitchen.ui.screens.SharedViewModel
 import com.samiun.businesskitchen.ui.screens.cakescreen.AddCakeScreen
 import com.samiun.businesskitchen.ui.screens.cakescreen.CakeScreen
 import com.samiun.businesskitchen.ui.screens.consumergoodscreen.AddConsumerGoodSceen
 import com.samiun.businesskitchen.ui.screens.consumergoodscreen.ConsumerGoodScreen
 import com.samiun.businesskitchen.ui.screens.fastfoodscreen.AddFastFoodScreen
 import com.samiun.businesskitchen.ui.screens.fastfoodscreen.FastFoodScreen
-import com.samiun.businesskitchen.ui.screens.signinscreen.SignInScreen
 import com.samiun.businesskitchen.ui.screens.homescreen.HomeScreen
 import com.samiun.businesskitchen.ui.screens.miscscreen.AddMiscScreen
 import com.samiun.businesskitchen.ui.screens.miscscreen.MiscScreen
+import com.samiun.businesskitchen.ui.screens.signinscreen.SignInScreen
+import com.samiun.businesskitchen.ui.screens.signinscreen.SignInViewModel
+import kotlinx.coroutines.launch
 
 @Composable
 fun Navigation() {
@@ -50,15 +50,15 @@ fun Navigation() {
             val viewModel = viewModel<SignInViewModel>()
             val state by viewModel.state.collectAsStateWithLifecycle()
             LaunchedEffect(key1 = Unit) {
-                if(googleAuthUiClient.getSignedInUser() != null) {
-                    navController.navigate(Screen.HomeScreen.route)
+                if (googleAuthUiClient.getSignedInUser() != null) {
+                    navController.navigate(Screen.HomeScreenLoggedIn.route)
                 }
             }
 
             val launcher = rememberLauncherForActivityResult(
                 contract = ActivityResultContracts.StartIntentSenderForResult(),
                 onResult = { result ->
-                    if(result.resultCode == ComponentActivity.RESULT_OK) {
+                    if (result.resultCode == ComponentActivity.RESULT_OK) {
                         scope.launch {
                             val signInResult = googleAuthUiClient.signInWithIntent(
                                 intent = result.data ?: return@launch
@@ -70,14 +70,14 @@ fun Navigation() {
             )
 
             LaunchedEffect(key1 = state.isSignInSuccessful) {
-                if(state.isSignInSuccessful) {
+                if (state.isSignInSuccessful) {
                     Toast.makeText(
                         context,
                         "Sign in successful",
                         Toast.LENGTH_LONG
                     ).show()
 
-                    navController.navigate(Screen.HomeScreen.route)
+                    navController.navigate(Screen.HomeScreenLoggedIn.route)
                     viewModel.resetState()
                 }
             }
@@ -96,9 +96,30 @@ fun Navigation() {
                 }
             )
         }
+
+        composable(Screen.HomeScreenLoggedIn.route) {
+            HomeScreen(
+                isLoggedIn = true,
+                navController = navController,
+                userData = googleAuthUiClient.getSignedInUser(),
+                onSignOut = {
+                    scope.launch {
+                        googleAuthUiClient.signOut()
+                        Toast.makeText(
+                            context,
+                            "Signed out",
+                            Toast.LENGTH_LONG
+                        ).show()
+                        navController.popBackStack()
+                    }
+                },
+                sharedViewModel = sharedViewModel
+            )
+        }
+
         composable(Screen.HomeScreen.route) {
             HomeScreen(
-                navController= navController,
+                navController = navController,
                 userData = googleAuthUiClient.getSignedInUser(),
                 onSignOut = {
                     scope.launch {

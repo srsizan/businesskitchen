@@ -16,6 +16,7 @@ class SettingsRepository @Inject constructor(private val prefs: SharedPreference
     fun setListToSharedPref(itemRecords: ItemRecords) {
         prefs.edit().putString(ITEM_TOKEN, Gson().toJson(itemRecords)).apply()
     }
+
     fun getListFromSharedPref(): ItemRecords? {
         val listOfMyClassObject: Type = object : TypeToken<ItemRecords?>() {}.type
         return Gson().fromJson(prefs.getString(ITEM_TOKEN, ""), listOfMyClassObject)
@@ -24,8 +25,9 @@ class SettingsRepository @Inject constructor(private val prefs: SharedPreference
     fun setControlPanelSharedPref(listofPair: List<Pair<String, String>>) {
         prefs.edit().putString(CONTROL_PANEL, Gson().toJson(listofPair)).apply()
     }
-    fun getControlPanelFromSharedPref(): List<Pair<String,String>>? {
-        val listOfMyClassObject: Type = object : TypeToken<List<Pair<String,String>>?>() {}.type
+
+    fun getControlPanelFromSharedPref(): List<Pair<String, String>>? {
+        val listOfMyClassObject: Type = object : TypeToken<List<Pair<String, String>>?>() {}.type
         return Gson().fromJson(prefs.getString(CONTROL_PANEL, ""), listOfMyClassObject)
     }
 }

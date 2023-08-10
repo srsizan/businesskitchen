@@ -48,7 +48,11 @@ fun FastFoodScreen(navController: NavController, sharedViewModel: SharedViewMode
             )
         },
         floatingActionButton = {
-            ItemsFloatingActionButton(navController = navController, sharedViewModel, Screen.AddFastFoodScreen.route)
+            ItemsFloatingActionButton(
+                navController = navController,
+                sharedViewModel,
+                Screen.AddFastFoodScreen.route
+            )
         }
     ) {
         Box(modifier = Modifier.padding(it)) {

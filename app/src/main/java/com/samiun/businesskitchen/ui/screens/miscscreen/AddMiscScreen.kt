@@ -23,7 +23,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -36,7 +35,11 @@ import com.samiun.businesskitchen.ui.screens.SharedViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddMiscScreen(navController: NavController, sharedViewModel: SharedViewModel, modifier: Modifier = Modifier) {
+fun AddMiscScreen(
+    navController: NavController,
+    sharedViewModel: SharedViewModel,
+    modifier: Modifier = Modifier
+) {
     var name by remember {
         mutableStateOf("")
     }
@@ -50,7 +53,6 @@ fun AddMiscScreen(navController: NavController, sharedViewModel: SharedViewModel
         mutableStateOf("")
     }
     val context = LocalContext.current
-    val focusManager = LocalFocusManager.current
     val backCallback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
             navController.navigate(Screen.MiscScreen.route)
@@ -94,7 +96,7 @@ fun AddMiscScreen(navController: NavController, sharedViewModel: SharedViewModel
             OutlinedTextField(
                 modifier = Modifier.width(300.dp),
                 value = maxUsage,
-                onValueChange = { maxUsage = it},
+                onValueChange = { maxUsage = it },
                 maxLines = 1,
                 placeholder = { Text(text = "") },
                 keyboardOptions = KeyboardOptions.Default.copy(

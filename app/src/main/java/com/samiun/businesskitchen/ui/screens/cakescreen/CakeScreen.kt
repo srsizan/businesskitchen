@@ -3,9 +3,14 @@ package com.samiun.businesskitchen.ui.screens.cakescreen
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -13,6 +18,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.samiun.businesskitchen.ui.components.ItemsFloatingActionButton
 import com.samiun.businesskitchen.ui.screens.Screen
@@ -48,11 +54,39 @@ fun CakeScreen(navController: NavController, sharedViewModel: SharedViewModel) {
             )
         },
         floatingActionButton = {
-            ItemsFloatingActionButton(navController = navController, sharedViewModel, Screen.AddCakeScreen.route)
+            ItemsFloatingActionButton(
+                navController = navController,
+                sharedViewModel,
+                Screen.AddCakeScreen.route
+            )
         }
     ) {
         Box(modifier = Modifier.padding(it)) {
-            Text(text = cakes.toString())
+            Spacer(modifier = Modifier.height(20.dp))
+
+            LazyColumn {
+                if (cakes != null) {
+                    items(cakes.size) { index ->
+                        OutlinedButton(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 15.dp),
+                            onClick = {
+
+                            }) {
+                            Text(text = cakes[index].name)
+//                            if (pedestrianList[index].hasError) {
+//                                Icon(
+//                                    imageVector = Icons.Outlined.Info,
+//                                    contentDescription = "Error",
+//                                    tint = Color.Red,
+//                                    modifier = Modifier.padding(start = 8.dp)
+//                                )
+//                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }

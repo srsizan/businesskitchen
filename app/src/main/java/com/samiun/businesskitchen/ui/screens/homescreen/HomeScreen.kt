@@ -2,6 +2,8 @@ package com.samiun.businesskitchen.ui.screens.homescreen
 
 import android.app.Activity
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
@@ -23,6 +25,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -53,6 +56,7 @@ import timber.log.Timber
 @Composable
 fun HomeScreen(
     navController: NavController,
+    isLoggedIn: Boolean = false,
     userData: UserData?,
     modifier: Modifier = Modifier,
     onSignOut: () -> Unit,
@@ -67,11 +71,28 @@ fun HomeScreen(
         mutableStateOf(false)
     }
 
+    val backCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            val activity = context as Activity
+            activity.finish()
+            System.exit(0)
+            dialogBox = false
+        }
+    }
+    val localOnBackPressedDispatcherOwner = LocalOnBackPressedDispatcherOwner.current
+
+    DisposableEffect(Unit) {
+        val dispatcher = localOnBackPressedDispatcherOwner?.onBackPressedDispatcher
+        dispatcher?.addCallback(backCallback)
+        onDispose {
+            backCallback.remove()
+        }
+    }
     val listofItems = listOf(
         Pair("Cake", context.resources.getResourceEntryName(R.drawable.cake)),
         Pair("Consumer Goods", context.resources.getResourceEntryName(R.drawable.consumergoods)),
         Pair("Misc", context.resources.getResourceEntryName(R.drawable.misc)),
-        Pair("Fast Food",context.resources.getResourceEntryName(R.drawable.fastfood))
+        Pair("Fast Food", context.resources.getResourceEntryName(R.drawable.fastfood))
     )
     Timber.d(" Items : - $listofItems")
 
@@ -79,7 +100,7 @@ fun HomeScreen(
         mutableStateOf(sharedViewModel.getControlPanelList())
     }
 
-    if(selectedItems == null){
+    if (selectedItems == null) {
         sharedViewModel.addItemsFromControlPanel(listofItems)
     }
 
@@ -93,7 +114,7 @@ fun HomeScreen(
                         onSignOut
                         val activity = context as Activity
                         activity.finish()
-                        java.lang.System.exit(0)
+                        System.exit(0)
                         dialogBox = false
 
                     }
@@ -108,7 +129,7 @@ fun HomeScreen(
             onDismissRequest = { controlPanelBox = false },
             title = { Text(text = "Control Panel") },
             text = {
-                Column() {
+                Column {
                     for (string in listofItems) {
                         Row(
                             modifier = Modifier
@@ -170,70 +191,76 @@ fun HomeScreen(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                LaunchedEffect(Unit) {
-                    if (userData != null) {
-                        saveUser(userData, dataBase)
-                    }
-
-                    val isUser = dataBase
-                        .whereEqualTo(USER_ID, userData?.userId)
-                        .whereEqualTo(CAN_ACCESS, true)
-                        .get()
-                        .await()
-                    try {
-                        if (isUser.isEmpty) {
-                            dialogBox = true
-
-                        } else {
-                            if (userData != null) {
-                                Toast.makeText(
-                                    context,
-                                    "Welcome, ${userData.username} We are delighted to have you back",
-                                    Toast.LENGTH_LONG
-                                ).show()
-                            }
+                if (isLoggedIn) {
+                    LaunchedEffect(Unit) {
+                        if (userData != null) {
+                            saveUser(userData, dataBase)
                         }
-                    } catch (e: Exception) {
-                        Timber.e("$e")
+
+                        val isUser = dataBase
+                            .whereEqualTo(USER_ID, userData?.userId)
+                            .whereEqualTo(CAN_ACCESS, true)
+                            .get()
+                            .await()
+                        try {
+                            if (isUser.isEmpty) {
+                                dialogBox = true
+
+                            } else {
+                                if (userData != null) {
+                                    Toast.makeText(
+                                        context,
+                                        "Welcome, ${userData.username} We are delighted to have you back",
+                                        Toast.LENGTH_LONG
+                                    ).show()
+                                }
+                            }
+                        } catch (e: Exception) {
+                            Timber.e("$e")
+                        }
                     }
                 }
-                if(selectedItems!=null){
-                LazyVerticalGrid(
-                    columns = GridCells.Fixed(2)
-                ) {
-                    Timber.e("$selectedItems")
-                    items(selectedItems!!) { foodItems ->
-                        Card(
-                            modifier = modifier
-                                .fillMaxWidth()
-                                .height(200.dp)
-                                .padding(10.dp)
-                                .combinedClickable(
-                                    onClick = {
-                                        navController.navigate(foodItems.first)
-                                        Timber.d(foodItems.first)
-                                        Timber.d(foodItems.second.toString())
-                                    },
-                                    onLongClick = {
-                                    }
-                                )
-                        ) {
-                            Box(
-                                contentAlignment = Alignment.Center
-                            ) {
-                                Column {
-                                    AsyncImage(
-                                        modifier= modifier.height(150.dp),
-                                        model = context.resources.getIdentifier(foodItems.second, "drawable", "com.samiun.businesskitchen"),
-                                        contentDescription = stringResource(R.string.imagedescription),
-                                        contentScale = ContentScale.Crop
+                if (selectedItems != null) {
+                    LazyVerticalGrid(
+                        columns = GridCells.Fixed(2)
+                    ) {
+                        Timber.e("$selectedItems")
+                        items(selectedItems!!) { foodItems ->
+                            Card(
+                                modifier = modifier
+                                    .fillMaxWidth()
+                                    .height(200.dp)
+                                    .padding(10.dp)
+                                    .combinedClickable(
+                                        onClick = {
+                                            navController.navigate(foodItems.first)
+                                            Timber.d(foodItems.first)
+                                            Timber.d(foodItems.second.toString())
+                                        },
+                                        onLongClick = {
+                                        }
                                     )
-                                    Text(text = foodItems.first)
+                            ) {
+                                Box(
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    Column {
+                                        AsyncImage(
+                                            modifier = modifier.height(150.dp),
+                                            model = context.resources.getIdentifier(
+                                                foodItems.second,
+                                                "drawable",
+                                                "com.samiun.businesskitchen"
+                                            ),
+                                            contentDescription = stringResource(R.string.imagedescription),
+                                            contentScale = ContentScale.Crop
+                                        )
+                                        Text(text = foodItems.first)
+                                    }
                                 }
                             }
                         }
                     }
-                }
                 }
             }
         }

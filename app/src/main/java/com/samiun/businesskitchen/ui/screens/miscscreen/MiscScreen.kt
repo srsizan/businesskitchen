@@ -48,7 +48,11 @@ fun MiscScreen(navController: NavController, sharedViewModel: SharedViewModel) {
             )
         },
         floatingActionButton = {
-            ItemsFloatingActionButton(navController = navController, sharedViewModel, Screen.AddMiscScreen.route)
+            ItemsFloatingActionButton(
+                navController = navController,
+                sharedViewModel,
+                Screen.AddMiscScreen.route
+            )
         }
     ) {
         Box(modifier = Modifier.padding(it)) {

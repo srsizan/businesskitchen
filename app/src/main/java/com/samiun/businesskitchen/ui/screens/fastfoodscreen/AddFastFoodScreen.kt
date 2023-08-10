@@ -36,7 +36,11 @@ import com.samiun.businesskitchen.ui.screens.SharedViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddFastFoodScreen(navController: NavController, sharedViewModel: SharedViewModel, modifier: Modifier = Modifier) {
+fun AddFastFoodScreen(
+    navController: NavController,
+    sharedViewModel: SharedViewModel,
+    modifier: Modifier = Modifier
+) {
     var name by remember {
         mutableStateOf("")
     }
@@ -94,7 +98,7 @@ fun AddFastFoodScreen(navController: NavController, sharedViewModel: SharedViewM
             OutlinedTextField(
                 modifier = Modifier.width(300.dp),
                 value = maxUsage,
-                onValueChange = { maxUsage = it},
+                onValueChange = { maxUsage = it },
                 maxLines = 1,
                 placeholder = { Text(text = "") },
                 keyboardOptions = KeyboardOptions.Default.copy(
@@ -127,7 +131,7 @@ fun AddFastFoodScreen(navController: NavController, sharedViewModel: SharedViewM
                             maxStock = maxStock.toInt()
                         )
                     )
-                    navController.navigate(Screen.MiscScreen.route)
+                    navController.navigate(Screen.FastFoodScreen.route)
                 } else {
                     Toast.makeText(
                         context,

@@ -19,11 +19,11 @@ class SharedViewModel @Inject constructor(
     var fastFoodList = mutableListOf<Items>()
 
     var currentList = settingsRepository.getControlPanelFromSharedPref()
-    var selectedItems = mutableListOf<Pair<String,Int>>()
+    var selectedItems = mutableListOf<Pair<String, Int>>()
 
 
     fun addCake(items: Items) {
-        if(currentData ==null){
+        if (currentData == null) {
             currentData = ItemRecords()
         }
         cakeList = currentData!!.data.cakeItems.toMutableList()
@@ -31,8 +31,9 @@ class SharedViewModel @Inject constructor(
         currentData!!.data.cakeItems = cakeList
         settingsRepository.setListToSharedPref(currentData!!)
     }
+
     fun addConsumerGood(items: Items) {
-        if(currentData ==null){
+        if (currentData == null) {
             currentData = ItemRecords()
         }
         consumerGoodList = currentData!!.data.consumerGoodItems.toMutableList()
@@ -40,8 +41,9 @@ class SharedViewModel @Inject constructor(
         currentData!!.data.consumerGoodItems = consumerGoodList
         settingsRepository.setListToSharedPref(currentData!!)
     }
+
     fun addMisc(items: Items) {
-        if(currentData ==null){
+        if (currentData == null) {
             currentData = ItemRecords()
         }
         miscList = currentData!!.data.miscItems.toMutableList()
@@ -49,8 +51,9 @@ class SharedViewModel @Inject constructor(
         currentData!!.data.miscItems = miscList
         settingsRepository.setListToSharedPref(currentData!!)
     }
+
     fun addFastFood(items: Items) {
-        if(currentData ==null){
+        if (currentData == null) {
             currentData = ItemRecords()
         }
         fastFoodList = currentData!!.data.fastFoodItems.toMutableList()
@@ -62,9 +65,11 @@ class SharedViewModel @Inject constructor(
     fun addItemsFromControlPanel(listOfPair: List<Pair<String, String>>) {
         settingsRepository.setControlPanelSharedPref(listOfPair)
     }
+
     fun getControlPanelList(): List<Pair<String, String>>? {
-       return settingsRepository.getControlPanelFromSharedPref()
+        return settingsRepository.getControlPanelFromSharedPref()
     }
+
     fun getItems(): ItemRecords? {
         return settingsRepository.getListFromSharedPref()
     }

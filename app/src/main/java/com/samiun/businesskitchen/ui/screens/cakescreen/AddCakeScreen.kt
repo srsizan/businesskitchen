@@ -40,7 +40,7 @@ fun AddCakeScreen(
     navController: NavController,
     sharedViewModel: SharedViewModel,
     modifier: Modifier = Modifier
-){
+) {
     var name by remember {
         mutableStateOf("")
     }
@@ -98,7 +98,7 @@ fun AddCakeScreen(
             OutlinedTextField(
                 modifier = Modifier.width(300.dp),
                 value = maxUsage,
-                onValueChange = { maxUsage = it},
+                onValueChange = { maxUsage = it },
                 maxLines = 1,
                 placeholder = { Text(text = "") },
                 keyboardOptions = KeyboardOptions.Default.copy(
@@ -131,7 +131,7 @@ fun AddCakeScreen(
                             maxStock = maxStock.toInt()
                         )
                     )
-                    navController.navigate(Screen.MiscScreen.route)
+                    navController.navigate(Screen.CakeScreen.route)
                 } else {
                     Toast.makeText(
                         context,
