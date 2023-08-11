@@ -95,15 +95,11 @@ fun HomeScreen(
         Pair("Misc", context.resources.getResourceEntryName(R.drawable.misc)),
         Pair("Fast Food", context.resources.getResourceEntryName(R.drawable.fastfood))
     )
-    Timber.d(" Items : - $listofItems")
-
     var selectedItems by remember {
         mutableStateOf(sharedViewModel.getControlPanelList())
     }
-
-    if (selectedItems == null) {
-        sharedViewModel.addItemsFromControlPanel(listofItems)
-    }
+    
+    selectedItems = if(selectedItems == null) listofItems else selectedItems
 
     if (dialogBox) {
         AlertDialog(

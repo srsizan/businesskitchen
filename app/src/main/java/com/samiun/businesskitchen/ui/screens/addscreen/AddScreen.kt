@@ -1,4 +1,5 @@
-package com.samiun.businesskitchen.ui.screens.cakescreen
+package com.samiun.businesskitchen.ui.screens.addscreen
+
 
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
@@ -36,28 +37,32 @@ import com.samiun.businesskitchen.ui.screens.SharedViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddCakeScreen(
+fun AddScreen(
     navController: NavController,
     sharedViewModel: SharedViewModel,
     modifier: Modifier = Modifier
 ) {
+    var currentScreen by remember {
+        mutableStateOf(sharedViewModel.currentScreen)
+    }
     var name by remember {
-        mutableStateOf("")
+        mutableStateOf(sharedViewModel.selectedItem.name)
     }
     var quantity by remember {
-        mutableStateOf("")
+        mutableStateOf(sharedViewModel.selectedItem.quantity.toString())
     }
     var maxUsage by remember {
-        mutableStateOf("")
+        mutableStateOf(sharedViewModel.selectedItem.maxUsage.toString())
     }
     var maxStock by remember {
-        mutableStateOf("")
+        mutableStateOf(sharedViewModel.selectedItem.maxStock.toString())
     }
     val context = LocalContext.current
     val backCallback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
             sharedViewModel.selectedItem = Items()
-            navController.navigate(Screen.CakeScreen.route)
+            sharedViewModel.currentData
+            navController.navigate(currentScreen)
         }
     }
     val localOnBackPressedDispatcherOwner = LocalOnBackPressedDispatcherOwner.current
@@ -85,8 +90,8 @@ fun AddCakeScreen(
             Spacer(modifier = Modifier.height(20.dp))
             OutlinedTextField(
                 modifier = Modifier.width(300.dp),
-                value = quantity,
-                onValueChange = { quantity = it },
+                value = if(quantity == "0") "" else quantity,
+                onValueChange = { quantity = it},
                 maxLines = 1,
                 placeholder = { Text(text = "Quantity") },
                 keyboardOptions = KeyboardOptions.Default.copy(
@@ -97,8 +102,8 @@ fun AddCakeScreen(
             Spacer(modifier = Modifier.height(20.dp))
             OutlinedTextField(
                 modifier = Modifier.width(300.dp),
-                value = maxUsage,
-                onValueChange = { maxUsage = it },
+                value = if(maxUsage =="0") "" else maxUsage,
+                onValueChange = { maxUsage = it},
                 maxLines = 1,
                 placeholder = { Text(text = "Max Usage") },
                 keyboardOptions = KeyboardOptions.Default.copy(
@@ -109,7 +114,7 @@ fun AddCakeScreen(
             Spacer(modifier = Modifier.height(20.dp))
             OutlinedTextField(
                 modifier = Modifier.width(300.dp),
-                value = maxStock.toString(),
+                value = if(maxStock =="0") "" else maxStock,
                 onValueChange = { maxStock = it },
                 maxLines = 1,
                 placeholder = { Text(text = "Maximum Stock") },
@@ -122,17 +127,17 @@ fun AddCakeScreen(
 
             Button(onClick = {
                 if (name.isNotEmpty() && quantity.toIntOrNull() != null && maxUsage.toIntOrNull() != null && maxStock.toIntOrNull() != null) {
-                    sharedViewModel.addCake(
+                    sharedViewModel.addItem(
                         Items(
                             name = name,
                             quantity = quantity.toInt(),
-                            category = "Cake",
+                            category = currentScreen,
                             maxUsage = maxUsage.toInt(),
                             maxStock = maxStock.toInt()
                         )
                     )
                     sharedViewModel.selectedItem = Items()
-                    navController.navigate(Screen.CakeScreen.route)
+                    navController.navigate(currentScreen)
                 } else {
                     Toast.makeText(
                         context,

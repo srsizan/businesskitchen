@@ -3,7 +3,10 @@ package com.samiun.businesskitchen.ui.screens.miscscreen
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -13,7 +16,9 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.samiun.businesskitchen.ui.components.ItemCard
 import com.samiun.businesskitchen.ui.components.ItemsFloatingActionButton
 import com.samiun.businesskitchen.ui.screens.Screen
 import com.samiun.businesskitchen.ui.screens.SharedViewModel
@@ -48,15 +53,26 @@ fun MiscScreen(navController: NavController, sharedViewModel: SharedViewModel) {
             )
         },
         floatingActionButton = {
+            sharedViewModel.currentScreen = Screen.MiscScreen.route
             ItemsFloatingActionButton(
                 navController = navController,
                 sharedViewModel,
-                Screen.AddMiscScreen.route
+                Screen.AddScreen.route
             )
         }
     ) {
         Box(modifier = Modifier.padding(it)) {
-            Text(text = misc.toString())
+            Spacer(modifier = Modifier.height(20.dp))
+
+            LazyColumn {
+                if (misc != null) {
+                    items(misc.size) { index ->
+                        ItemCard(name = misc[index].name) {
+
+                        }
+                    }
+                }
+            }
         }
     }
 }

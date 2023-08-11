@@ -17,10 +17,99 @@ class SharedViewModel @Inject constructor(
     var consumerGoodList = mutableListOf<Items>()
     var miscList = mutableListOf<Items>()
     var fastFoodList = mutableListOf<Items>()
+    var selectedItemIndex = -1
 
-    var currentList = settingsRepository.getControlPanelFromSharedPref()
-    var selectedItems = mutableListOf<Pair<String, Int>>()
+    var selectedItem = Items()
+    var currentScreen = ""
 
+
+    fun addItem(items: Items) {
+        if (currentData == null) {
+            currentData = ItemRecords()
+        }
+        if(selectedItemIndex<0) {
+            when (items.category) {
+                Screen.CakeScreen.route -> {
+                    cakeList = currentData!!.data.cakeItems.toMutableList()
+                    cakeList.add(items)
+                    currentData!!.data.cakeItems = cakeList
+                    settingsRepository.setListToSharedPref(currentData!!)
+                }
+
+                Screen.ConsumerGoodsScreen.route -> {
+                    consumerGoodList = currentData!!.data.consumerGoodItems.toMutableList()
+                    consumerGoodList.add(items)
+                    currentData!!.data.consumerGoodItems = consumerGoodList
+                    settingsRepository.setListToSharedPref(currentData!!)
+                }
+
+                Screen.FastFoodScreen.route -> {
+                    fastFoodList = currentData!!.data.fastFoodItems.toMutableList()
+                    fastFoodList.add(items)
+                    currentData!!.data.fastFoodItems = fastFoodList
+                    settingsRepository.setListToSharedPref(currentData!!)
+                }
+
+                else -> {
+                    miscList = currentData!!.data.miscItems.toMutableList()
+                    miscList.add(items)
+                    currentData!!.data.miscItems = miscList
+                    settingsRepository.setListToSharedPref(currentData!!)
+                }
+            }
+        }
+        else{
+            when (items.category) {
+                Screen.CakeScreen.route -> {
+                    currentData!!.data.cakeItems[selectedItemIndex].apply {
+                        this.name = items.name
+                        this.quantity = items.quantity
+                        this.image = items.image
+                        this.category = items.category
+                       this.maxStock = items.maxStock
+                        this.maxUsage = items.maxUsage
+                    }
+                    settingsRepository.setListToSharedPref(currentData!!)
+                }
+
+                Screen.ConsumerGoodsScreen.route -> {
+                    currentData!!.data.consumerGoodItems[selectedItemIndex].apply {
+                        this.name = items.name
+                        this.quantity = items.quantity
+                        this.image = items.image
+                        this.category = items.category
+                        this.maxStock = items.maxStock
+                        this.maxUsage = items.maxUsage
+                    }
+                    settingsRepository.setListToSharedPref(currentData!!)
+                }
+
+                Screen.FastFoodScreen.route -> {
+                    currentData!!.data.fastFoodItems[selectedItemIndex].apply {
+                        this.name = items.name
+                        this.quantity = items.quantity
+                        this.image = items.image
+                        this.category = items.category
+                        this.maxStock = items.maxStock
+                        this.maxUsage = items.maxUsage
+                    }
+                    settingsRepository.setListToSharedPref(currentData!!)
+                }
+
+                else -> {
+                    currentData!!.data.miscItems[selectedItemIndex].apply {
+                        this.name = items.name
+                        this.quantity = items.quantity
+                        this.image = items.image
+                        this.category = items.category
+                        this.maxStock = items.maxStock
+                        this.maxUsage = items.maxUsage
+                    }
+                    settingsRepository.setListToSharedPref(currentData!!)
+                }
+            }
+        }
+    }
 
     fun addCake(items: Items) {
         if (currentData == null) {

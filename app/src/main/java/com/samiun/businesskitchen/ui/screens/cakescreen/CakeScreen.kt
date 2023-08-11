@@ -53,10 +53,11 @@ fun CakeScreen(navController: NavController, sharedViewModel: SharedViewModel) {
             )
         },
         floatingActionButton = {
+            sharedViewModel.currentScreen = Screen.CakeScreen.route
             ItemsFloatingActionButton(
                 navController = navController,
                 sharedViewModel,
-                Screen.AddCakeScreen.route
+                Screen.AddScreen.route
             )
         }
     ) {
@@ -66,17 +67,10 @@ fun CakeScreen(navController: NavController, sharedViewModel: SharedViewModel) {
             LazyColumn {
                 if (cakes != null) {
                     items(cakes.size) { index ->
-//                        Button(
-//                            modifier = Modifier
-//                                .fillMaxWidth()
-//                                .padding(horizontal = 15.dp),
-//                            onClick = {
-//
-//                            }) {
-//                            Text(text = cakes[index].name)
-//                        }
                         ItemCard(name = cakes[index].name) {
-
+                            sharedViewModel.selectedItemIndex = index
+                            sharedViewModel.selectedItem = cakes[index]
+                            navController.navigate(Screen.AddScreen.route)
                         }
                     }
                 }

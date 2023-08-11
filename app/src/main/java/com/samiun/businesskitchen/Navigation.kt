@@ -20,6 +20,7 @@ import androidx.navigation.compose.rememberNavController
 import com.google.android.gms.auth.api.identity.Identity
 import com.samiun.businesskitchen.ui.screens.Screen
 import com.samiun.businesskitchen.ui.screens.SharedViewModel
+import com.samiun.businesskitchen.ui.screens.addscreen.AddScreen
 import com.samiun.businesskitchen.ui.screens.cakescreen.AddCakeScreen
 import com.samiun.businesskitchen.ui.screens.cakescreen.CakeScreen
 import com.samiun.businesskitchen.ui.screens.consumergoodscreen.AddConsumerGoodSceen
@@ -110,7 +111,7 @@ fun Navigation() {
                             "Signed out",
                             Toast.LENGTH_LONG
                         ).show()
-                        navController.popBackStack()
+                        navController.navigate(Screen.SigningScreen.route)
                     }
                 },
                 sharedViewModel = sharedViewModel
@@ -129,7 +130,7 @@ fun Navigation() {
                             "Signed out",
                             Toast.LENGTH_LONG
                         ).show()
-                        navController.popBackStack()
+                        navController.navigate(Screen.SigningScreen.route)
                     }
                 },
                 sharedViewModel = sharedViewModel
@@ -159,6 +160,9 @@ fun Navigation() {
         }
         composable(route = Screen.AddFastFoodScreen.route) {
             AddFastFoodScreen(navController, sharedViewModel)
+        }
+        composable(route = Screen.AddScreen.route) {
+            AddScreen(navController, sharedViewModel)
         }
     }
 }
