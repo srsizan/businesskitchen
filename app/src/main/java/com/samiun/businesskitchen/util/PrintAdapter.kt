@@ -42,8 +42,14 @@ class HelloWorldPrintAdapter(private val context: Context) : PrintDocumentAdapte
         cancellationSignal: CancellationSignal?,
         callback: WriteResultCallback
     ) {
-        val pdfDocument = PrintedPdfDocument(context, PrintAttributes.Builder().build())
+        val printAttributes = PrintAttributes.Builder()
+            .setColorMode(PrintAttributes.COLOR_MODE_COLOR)
+            .setMediaSize(PrintAttributes.MediaSize.ISO_A4)
+            .setResolution(PrintAttributes.Resolution("pdf", "pdf", 300, 300))
+            .setMinMargins(PrintAttributes.Margins.NO_MARGINS)
+            .build()
 
+        val pdfDocument = PrintedPdfDocument(context, printAttributes)
         try {
             val pageInfo = PdfDocument.PageInfo.Builder(300, 300, 1).create()
             val page = pdfDocument.startPage(pageInfo)

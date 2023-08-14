@@ -45,7 +45,7 @@ class MainActivity : ComponentActivity() {
             //val printAdapter = PdfDocumentAdapter(this,Comman.getAppPath(this)+file_name)
             printManager.print("Documents",printAdapter, PrintAttributes.Builder().build())
         }catch (e:Exception){
-            Timber.tag("Harshita").e("" + e.message)
+            Timber.tag("Harshita").e("%s", e.message)
         }
 
     }
