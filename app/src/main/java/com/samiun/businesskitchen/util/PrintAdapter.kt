@@ -43,8 +43,8 @@ class HelloWorldPrintAdapter(private val context: Context) : PrintDocumentAdapte
         callback: WriteResultCallback
     ) {
         val printAttributes = PrintAttributes.Builder()
-            .setColorMode(PrintAttributes.COLOR_MODE_COLOR)
-            .setMediaSize(PrintAttributes.MediaSize.ISO_A4)
+            .setColorMode(PrintAttributes.COLOR_MODE_MONOCHROME)
+            .setMediaSize(PrintAttributes.MediaSize.UNKNOWN_PORTRAIT)
             .setResolution(PrintAttributes.Resolution("pdf", "pdf", 300, 300))
             .setMinMargins(PrintAttributes.Margins.NO_MARGINS)
             .build()
