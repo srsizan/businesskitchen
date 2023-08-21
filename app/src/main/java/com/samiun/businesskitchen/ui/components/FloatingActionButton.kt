@@ -13,6 +13,7 @@ fun ItemsFloatingActionButton(
     navController: NavController, sharedViewModel: SharedViewModel, route: String
 ) {
     FloatingActionButton(onClick = {
+        sharedViewModel.selectedItemIndex = -1
         navController.navigate(route)
     }) {
         Icon(Icons.Default.Add, contentDescription = "Add a Item")

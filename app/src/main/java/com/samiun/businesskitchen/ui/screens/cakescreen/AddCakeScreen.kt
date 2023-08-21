@@ -5,9 +5,10 @@ import androidx.activity.OnBackPressedCallback
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
@@ -23,7 +24,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -33,6 +33,7 @@ import com.samiun.businesskitchen.R
 import com.samiun.businesskitchen.data.model.Items
 import com.samiun.businesskitchen.ui.screens.Screen
 import com.samiun.businesskitchen.ui.screens.SharedViewModel
+import com.samiun.businesskitchen.util.printPDF
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -69,7 +70,8 @@ fun AddCakeScreen(
             backCallback.remove()
         }
     }
-    Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+
+    Box(modifier = modifier.padding(10.dp), contentAlignment = Alignment.Center) {
         Column {
             Spacer(modifier = Modifier.height(20.dp))
             OutlinedTextField(
@@ -118,31 +120,49 @@ fun AddCakeScreen(
                     imeAction = ImeAction.Done
                 )
             )
-            Spacer(modifier = Modifier.height(20.dp))
+            Row {
+                Spacer(modifier = Modifier.height(20.dp))
 
-            Button(onClick = {
-                if (name.isNotEmpty() && quantity.toIntOrNull() != null && maxUsage.toIntOrNull() != null && maxStock.toIntOrNull() != null) {
-                    sharedViewModel.addCake(
-                        Items(
-                            name = name,
-                            quantity = quantity.toInt(),
-                            category = "Cake",
-                            maxUsage = maxUsage.toInt(),
-                            maxStock = maxStock.toInt()
+                Button(onClick = {
+                    if (name.isNotEmpty() && quantity.toIntOrNull() != null  && maxStock.toIntOrNull() != null) {
+                        sharedViewModel.addCake(
+                            Items(
+                                name = name,
+                                quantity = quantity.toInt(),
+                                category = "Cake",
+                                maxUsage = maxUsage,
+                                maxStock = maxStock.toInt()
+                            )
                         )
-                    )
-                    sharedViewModel.selectedItem = Items()
-                    navController.navigate(Screen.CakeScreen.route)
-                } else {
-                    Toast.makeText(
-                        context,
-                        context.getString(R.string.enter_proper_items_details),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            }) {
-                Text(text = stringResource(R.string.saveItem))
+                        sharedViewModel.selectedItem = Items()
+                        navController.navigate(Screen.CakeScreen.route)
+                    } else {
+                        Toast.makeText(
+                            context,
+                            context.getString(R.string.enter_proper_items_details),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }) {
+                    Text(text = stringResource(R.string.saveItem))
 
+                }
+
+                Spacer(modifier = Modifier.width(40.dp))
+
+                Button(onClick = {
+                    printPDF(context, items = Items(
+                        name = name,
+                        quantity = quantity.toInt(),
+                        category = "Cake",
+                        maxUsage = maxUsage.toInt(),
+                        maxStock = maxStock.toInt()
+                    )
+                    )
+                }) {
+                    Text(text = "Print")
+
+                }
             }
         }
     }

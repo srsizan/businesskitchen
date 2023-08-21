@@ -34,9 +34,6 @@ fun HomeScreenTopBar(
     title: String = stringResource(id = R.string.app_name),
 ) {
 
-    var settingsDialog by rememberSaveable {
-        mutableStateOf(false)
-    }
     val items = listOf(
         stringResource(R.string.control_pannel),
         stringResource(R.string.sign_out),

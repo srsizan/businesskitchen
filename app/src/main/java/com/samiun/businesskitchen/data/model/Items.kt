@@ -5,6 +5,6 @@ data class Items(
     var quantity: Int = 0,
     var category: String = "",
     var image: String = "",
-    var maxUsage: Int = 0,
+    var maxUsage: String = "",
     var maxStock: Int = 0,
 )

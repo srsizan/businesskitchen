@@ -11,4 +11,11 @@
     <string name="control_pannel">Control Pannel</string>
     <string name="enter_proper_items_details">Enter Proper Item Details\n</string>
     <string name="saveItem">Save Item</string>
+    <string name="cancel_notification_action_string">CANCEL_NOTIFICATION</string>
+    <string name="snooze_notification_action_string">SNOOZE_NOTIFICATION</string>
+    <string name="alarm_channal_id_string">alarm_channel</string>
+    <string name="alarm_channel_name_string">Alarm Channel</string>
+    <string name="notification_content_title_string">Business Kichen</string>
+    <string name="snooze_title_string">Snooze</string>
+    <string name="cancel_title_string">Cancel</string>
 </resources>

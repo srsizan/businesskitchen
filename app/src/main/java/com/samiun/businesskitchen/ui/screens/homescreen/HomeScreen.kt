@@ -100,6 +100,7 @@ fun HomeScreen(
     }
     
     selectedItems = if(selectedItems == null) listofItems else selectedItems
+    Timber.d("$selectedItems")
 
     if (dialogBox) {
         AlertDialog(
