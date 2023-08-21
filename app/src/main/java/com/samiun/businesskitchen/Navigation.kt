@@ -21,14 +21,10 @@ import com.google.android.gms.auth.api.identity.Identity
 import com.samiun.businesskitchen.ui.screens.Screen
 import com.samiun.businesskitchen.ui.screens.SharedViewModel
 import com.samiun.businesskitchen.ui.screens.addscreen.AddScreen
-import com.samiun.businesskitchen.ui.screens.cakescreen.AddCakeScreen
 import com.samiun.businesskitchen.ui.screens.cakescreen.CakeScreen
-import com.samiun.businesskitchen.ui.screens.consumergoodscreen.AddConsumerGoodSceen
 import com.samiun.businesskitchen.ui.screens.consumergoodscreen.ConsumerGoodScreen
-import com.samiun.businesskitchen.ui.screens.fastfoodscreen.AddFastFoodScreen
 import com.samiun.businesskitchen.ui.screens.fastfoodscreen.FastFoodScreen
 import com.samiun.businesskitchen.ui.screens.homescreen.HomeScreen
-import com.samiun.businesskitchen.ui.screens.miscscreen.AddMiscScreen
 import com.samiun.businesskitchen.ui.screens.miscscreen.MiscScreen
 import com.samiun.businesskitchen.ui.screens.signinscreen.SignInScreen
 import com.samiun.businesskitchen.ui.screens.signinscreen.SignInViewModel
@@ -140,26 +136,15 @@ fun Navigation() {
         composable(route = Screen.CakeScreen.route) {
             CakeScreen(navController, sharedViewModel)
         }
-        composable(route = Screen.AddCakeScreen.route) {
-            AddCakeScreen(navController, sharedViewModel)
-        }
         composable(route = Screen.ConsumerGoodsScreen.route) {
             ConsumerGoodScreen(navController, sharedViewModel)
-        }
-        composable(route = Screen.AddConsumerGoodsScreen.route) {
-            AddConsumerGoodSceen(navController, sharedViewModel)
         }
         composable(route = Screen.MiscScreen.route) {
             MiscScreen(navController, sharedViewModel)
         }
-        composable(route = Screen.AddMiscScreen.route) {
-            AddMiscScreen(navController, sharedViewModel)
-        }
+
         composable(route = Screen.FastFoodScreen.route) {
             FastFoodScreen(navController, sharedViewModel)
-        }
-        composable(route = Screen.AddFastFoodScreen.route) {
-            AddFastFoodScreen(navController, sharedViewModel)
         }
         composable(route = Screen.AddScreen.route) {
             AddScreen(navController, sharedViewModel)

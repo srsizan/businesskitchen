@@ -6,6 +6,7 @@ import android.widget.DatePicker
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -19,6 +20,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
@@ -108,21 +110,24 @@ fun AddScreen(
         topBar = {
             ItemScreenTopBar(
                 onPrint = {
-                    printPDF(context, Items(
-                        name = name,
-                        quantity = quantity.toInt(),
-                        category = currentScreen,
-                        maxUsage = maxUsage,
-                        maxStock = maxStock.toInt()
-                    )
+                    printPDF(
+                        context, Items(
+                            name = name,
+                            quantity = quantity.toInt(),
+                            category = currentScreen,
+                            maxUsage = maxUsage,
+                            maxStock = maxStock.toInt()
+                        )
                     )
                 }
             )
         }
     ) {
-        Box(modifier = modifier
-            .padding(it)
-            .fillMaxSize(), contentAlignment = Alignment.Center) {
+        Box(
+            modifier = modifier
+                .padding(it)
+                .fillMaxSize(), contentAlignment = Alignment.Center
+        ) {
             Column {
                 Spacer(modifier = Modifier.height(20.dp))
                 OutlinedTextField(
@@ -147,17 +152,21 @@ fun AddScreen(
                         imeAction = ImeAction.Next
                     )
                 )
+                fun showDatePicker(){
+                    datePicker.show()
+                }
                 Spacer(modifier = Modifier.height(20.dp))
-                OutlinedTextField(
-                    modifier = Modifier.width(300.dp),
+                TextField(
+                    modifier = Modifier
+                        .width(300.dp)
+                        .clickable {
+                            datePicker.show()
+                        },
+                    enabled = false,
                     value = if (maxUsage == "0") "" else maxUsage,
                     onValueChange = { maxUsage = it },
                     maxLines = 1,
                     placeholder = { Text(text = "Max Usage") },
-                    keyboardOptions = KeyboardOptions.Default.copy(
-                        keyboardType = KeyboardType.Number,
-                        imeAction = ImeAction.Next
-                    )
                 )
                 Spacer(modifier = Modifier.height(20.dp))
                 OutlinedTextField(

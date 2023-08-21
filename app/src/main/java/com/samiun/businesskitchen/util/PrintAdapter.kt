@@ -11,6 +11,7 @@ import android.print.PrintAttributes
 import android.print.pdf.PrintedPdfDocument
 import android.print.PrintDocumentAdapter
 import android.print.PrintDocumentInfo
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.samiun.businesskitchen.data.model.Items
 import java.io.FileOutputStream
@@ -61,39 +62,40 @@ class PrintAdapter(private val context: Context, items : Items) : PrintDocumentA
             paint.color = Color.BLACK
             paint.style = Paint.Style.STROKE // Set the paint style to stroke for drawing borders
             paint.textSize = 10f
-            var typeface = Typeface.create("times new roman", Typeface.NORMAL)
+            val typeface = Typeface.create("times new roman", Typeface.NORMAL)
             paint.typeface = typeface
 
-            val boldTypeFace = Typeface.create("times new roman", Typeface.BOLD)
-            val textPaint = Paint()
-            textPaint.color = Color.BLACK
-            textPaint.textSize = 10f
-            textPaint.typeface = typeface
+            val namePaint = Paint()
+            namePaint.color = Color.BLACK
+            namePaint.textSize = 20f
+            val nametypeface = Typeface.create("times new roman", Typeface.BOLD)
+            namePaint.typeface = nametypeface
+
+            val otherPaint = Paint()
+            otherPaint.color = Color.BLACK
+            otherPaint.textSize = 10f
+            val othertypeface = Typeface.create("times new roman", Typeface.NORMAL)
+            otherPaint.typeface = othertypeface
 
             val tableWidth = pageInfo.pageWidth
             val cellWidth = tableWidth / 4
             val cellHeight = 30f
-            var startX = 50f
+            val startX = 50f
             var startY = 100f
             val lineHeight = 40f
-            canvas.drawText("name: ${item.name}", 20f, 50f, textPaint.apply {
-                this.textSize = 20f
-                this.typeface = boldTypeFace
-            })
+            canvas.drawText("${item.name}", 20f, 40f, namePaint)
 
-            canvas.drawRect(0f, startY, tableWidth.toFloat(), startY + cellHeight, paint)
-            canvas.drawText("Category",
-                (cellWidth + cellWidth / 3).toFloat(), startY + cellHeight / 3, textPaint)
+            canvas.drawRect(0.5f, startY, tableWidth.toFloat(), startY + cellHeight, paint)
+            canvas.drawText("Category", (cellWidth / 3).toFloat(), startY + cellHeight / 3, otherPaint)
             canvas.drawText("Max Usage",
-                (cellWidth * 2 + cellWidth / 3).toFloat(), startY + cellHeight / 3, textPaint)
+                (cellWidth + cellWidth / 3).toFloat(), startY + cellHeight / 3, otherPaint)
 
             startY += cellHeight
 
-            canvas.drawRect(0f, startY, tableWidth.toFloat(), startY + cellHeight, paint)
-            canvas.drawText(item.category,
-                (cellWidth + cellWidth / 2).toFloat(), startY + cellHeight / 2, textPaint)
-            canvas.drawText(item.maxUsage.toString(),
-                (cellWidth * 2 + cellWidth / 2).toFloat(), startY + cellHeight / 2, textPaint)
+            canvas.drawRect(0.5f, startY, tableWidth.toFloat(), startY + cellHeight, paint)
+            canvas.drawText(item.category, (cellWidth / 3).toFloat(), startY + cellHeight / 3, otherPaint)
+            canvas.drawText(item.maxUsage,
+                (cellWidth + cellWidth / 3).toFloat(), startY + cellHeight / 3, otherPaint)
             startY += cellHeight
 //            canvas.drawRect(0f, startY, tableWidth.toFloat(), startY + cellHeight, paint)
 //            canvas.drawText("name: ${item.name}", startX, startY, paint)
