@@ -27,9 +27,9 @@ fun ItemScreenTopBar(
             )
         },
         actions = {
-                  Button(onClick = { onPrint() }) {
-                      Text(text = "Print")
-                  }
+            Button(onClick = { onPrint() }) {
+                Text(text = "Print")
+            }
         },
     )
 }

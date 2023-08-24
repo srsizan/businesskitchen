@@ -60,9 +60,13 @@ fun SignInScreen(
             )
         ) {
             Row {
-                AsyncImage(model = R.drawable.google, contentDescription = "Google Logo", modifier = Modifier
-                    .height(18.dp)
-                    .width(18.dp))
+                AsyncImage(
+                    model = R.drawable.google,
+                    contentDescription = "Google Logo",
+                    modifier = Modifier
+                        .height(18.dp)
+                        .width(18.dp)
+                )
                 Spacer(modifier = Modifier.width(5.dp))
                 Text(text = "Sign in")
             }

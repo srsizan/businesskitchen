@@ -49,7 +49,7 @@ fun AddScreen(
     sharedViewModel: SharedViewModel,
     modifier: Modifier = Modifier
 ) {
-    var currentScreen by remember {
+    val currentScreen by remember {
         mutableStateOf(sharedViewModel.currentScreen)
     }
     var name by remember {
@@ -152,9 +152,6 @@ fun AddScreen(
                         imeAction = ImeAction.Next
                     )
                 )
-                fun showDatePicker(){
-                    datePicker.show()
-                }
                 Spacer(modifier = Modifier.height(20.dp))
                 TextField(
                     modifier = Modifier
@@ -183,7 +180,7 @@ fun AddScreen(
                 Spacer(modifier = Modifier.height(20.dp))
 
                 Button(onClick = {
-                    if (name.isNotEmpty() && quantity.toIntOrNull() != null && maxUsage.toIntOrNull() != null && maxStock.toIntOrNull() != null) {
+                    if (name.isNotEmpty() && quantity.toIntOrNull() != null && maxUsage.isNotEmpty() && maxStock.toIntOrNull() != null) {
                         sharedViewModel.addItem(
                             Items(
                                 name = name,
@@ -191,7 +188,7 @@ fun AddScreen(
                                 category = currentScreen,
                                 maxUsage = maxUsage,
                                 maxStock = maxStock.toInt()
-                            )
+                            ), context
                         )
                         sharedViewModel.selectedItem = Items()
                         navController.navigate(currentScreen)

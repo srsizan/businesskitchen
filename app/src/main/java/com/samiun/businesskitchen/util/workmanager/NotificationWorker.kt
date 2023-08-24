@@ -8,14 +8,14 @@ import android.content.Context
 import android.content.Intent
 import android.media.RingtoneManager
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.work.*
+import com.samiun.businesskitchen.R
+import timber.log.Timber
 import java.time.Duration
 import java.time.LocalDateTime
 import java.util.concurrent.TimeUnit
-import com.samiun.businesskitchen.R
 
 class NotificationWorker(
     appContext: Context,
@@ -44,7 +44,7 @@ class NotificationWorker(
         val notificationManager =
             applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         // Define notification ID counter
-        val notificationId = (System.currentTimeMillis()%10000).toInt()
+        val notificationId = (System.currentTimeMillis() % 10000).toInt()
         val channelId = applicationContext.getString(R.string.alarm_channal_id_string)
         val channelName = applicationContext.getString(R.string.app_name)
         val snoozeAction = createSnoozeAction(applicationContext, inputData, notificationId)
@@ -101,7 +101,6 @@ class NotificationWorker(
             action = context.getString(R.string.cancel_notification_action_string)
             putExtra("notificationId", notificationId)
         }
-        Log.d("notification1234", " createCancelActionCreate : $notificationId")
         val cancelPendingIntent = PendingIntent.getBroadcast(
             context,
             notificationId,
@@ -118,7 +117,6 @@ class NotificationWorker(
 }
 
 fun setNotifications(itemname: String, time: LocalDateTime, current: Context) {
-    Log.d("nitificationcheck", "addDosage:notifytime $time ")
     val currentTime = LocalDateTime.now()
     val duration = Duration.between(currentTime, time)
     val delay = duration.toMillis()
@@ -133,4 +131,5 @@ fun setNotifications(itemname: String, time: LocalDateTime, current: Context) {
         .build()
 
     WorkManager.getInstance(current).enqueue(notificationWorkRequest)
+    Timber.e("Notification set on $time  of $itemname")
 }

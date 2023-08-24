@@ -22,6 +22,7 @@ class NotificationBroadcastReceiver : BroadcastReceiver() {
                     notificationList.remove(notificationId)
                     Log.d("notification1234", "CancelReceive: $notificationId")
                 }
+
                 context.getString(R.string.snooze_notification_action_string) -> {
                     notificationManager.cancel(notificationId)
                     setNotifications(

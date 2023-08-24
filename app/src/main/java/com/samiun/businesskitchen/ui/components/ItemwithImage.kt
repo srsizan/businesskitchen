@@ -23,7 +23,13 @@ import com.samiun.businesskitchen.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ItemWithImage(context: Context,name: String, image: String, modifier: Modifier,onClick: () -> Unit) {
+fun ItemWithImage(
+    context: Context,
+    name: String,
+    image: String,
+    modifier: Modifier,
+    onClick: () -> Unit
+) {
     Card(
         onClick = onClick,
         shape = RoundedCornerShape(

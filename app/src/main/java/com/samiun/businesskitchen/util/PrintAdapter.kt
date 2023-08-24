@@ -1,23 +1,23 @@
 package com.samiun.businesskitchen.util
 
 import android.content.Context
-import android.graphics.*
+import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.Typeface
 import android.graphics.pdf.PdfDocument
 import android.os.Bundle
 import android.os.CancellationSignal
 import android.os.ParcelFileDescriptor
 import android.print.PageRange
 import android.print.PrintAttributes
-import android.print.pdf.PrintedPdfDocument
 import android.print.PrintDocumentAdapter
 import android.print.PrintDocumentInfo
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import android.print.pdf.PrintedPdfDocument
 import com.samiun.businesskitchen.data.model.Items
 import java.io.FileOutputStream
 import java.io.IOException
 
-class PrintAdapter(private val context: Context, items : Items) : PrintDocumentAdapter() {
+class PrintAdapter(private val context: Context, items: Items) : PrintDocumentAdapter() {
     val item = items
 
     override fun onLayout(
@@ -78,31 +78,43 @@ class PrintAdapter(private val context: Context, items : Items) : PrintDocumentA
             otherPaint.typeface = othertypeface
 
             val tableWidth = pageInfo.pageWidth
-            val cellWidth = tableWidth / 4
+            val cellWidth = tableWidth / 3
             val cellHeight = 30f
-            val startX = 50f
             var startY = 100f
-            val lineHeight = 40f
-            canvas.drawText("${item.name}", 20f, 40f, namePaint)
+            canvas.drawText(item.name, 20f, 40f, namePaint)
 
             canvas.drawRect(0.5f, startY, tableWidth.toFloat(), startY + cellHeight, paint)
-            canvas.drawText("Category", (cellWidth / 3).toFloat(), startY + cellHeight / 3, otherPaint)
-            canvas.drawText("Max Usage",
-                (cellWidth + cellWidth / 3).toFloat(), startY + cellHeight / 3, otherPaint)
+            canvas.drawText(
+                "Category",
+                (cellWidth / 2).toFloat(),
+                startY + cellHeight / 2,
+                otherPaint
+            )
+            canvas.drawText(
+                "Max Usage",
+                (cellWidth + cellWidth / 2).toFloat(), startY + cellHeight / 2, otherPaint
+            )
 
             startY += cellHeight
 
             canvas.drawRect(0.5f, startY, tableWidth.toFloat(), startY + cellHeight, paint)
-            canvas.drawText(item.category, (cellWidth / 3).toFloat(), startY + cellHeight / 3, otherPaint)
-            canvas.drawText(item.maxUsage,
-                (cellWidth + cellWidth / 3).toFloat(), startY + cellHeight / 3, otherPaint)
+            canvas.drawText(
+                item.category,
+                (cellWidth / 2).toFloat(),
+                startY + cellHeight / 2,
+                otherPaint
+            )
+            otherPaint.color = Color.RED
+            canvas.drawText(
+                item.maxUsage,
+                (cellWidth + cellWidth / 2).toFloat(), startY + cellHeight / 2, otherPaint
+            )
             startY += cellHeight
 //            canvas.drawRect(0f, startY, tableWidth.toFloat(), startY + cellHeight, paint)
 //            canvas.drawText("name: ${item.name}", startX, startY, paint)
 //            canvas.drawText("Category:${item.category}", startX, startY+20, paint)
 //            canvas.drawText("Max Usage: ${item.maxUsage}", startX, startY+40, paint)
 //            startY += lineHeight
-
 
 
             pdfDocument.finishPage(page)
